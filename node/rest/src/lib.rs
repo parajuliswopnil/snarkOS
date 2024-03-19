@@ -110,8 +110,8 @@ impl<N: Network, C: ConsensusStorage<N>, R: Routing<N>> Rest<N, C, R> {
         // Prepare the rate limiting setup.
         let governor_config = Box::new(
             GovernorConfigBuilder::default()
-                .per_second(1)
-                .burst_size(rest_rps)
+                .per_second(100000) // changes made to prevent rate limit while running dokojs tests
+                .burst_size(100000u32)
                 .error_handler(|error| Response::new(error.to_string()))
                 .finish()
                 .expect("Couldn't set up rate limiting for the REST server!"),
